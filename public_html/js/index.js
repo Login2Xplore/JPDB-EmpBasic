@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$("empid").focus();
+$("#empid").focus();
 
 function recNo(jsonObj) {
     var n = JSON.parse(jsonObj.data);
