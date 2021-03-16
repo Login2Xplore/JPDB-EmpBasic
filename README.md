@@ -10,5 +10,5 @@ On page load an empty form will be displayed and the cursor will remain at empID
  - Modify the data in the form and click on [Change] button to update this record in the database or click the [Reset] button to reset the form for step-1.
 
 
-![](/public_html/images/Emp-Exist.png)
+![](/public_html/images/Emp-Exists.png)
 ![](/public_html/images/Emp-New.png)
