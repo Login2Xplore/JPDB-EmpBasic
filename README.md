@@ -1,5 +1,4 @@
-# JPDB-EmpDashboard
-### HR_dashboard using JPDB
+# JPDB-Employee Form
 ## by [Login2Xplore](http://login2explore.com/index.php)
 Has 3 buttons - [Save], [Change], [Reset]
 
@@ -9,3 +8,7 @@ On page load an empty form will be displayed and the cursor will remain at empID
  - Complete the data entry form and use [Save] button to store the data in file or use [Reset] button to reset the form for step-1.
  - If empID is present in the database, display that data in the form. Enable [Change] and [Reset] buttons and move the cursor to the empName field. Also disable the empID field. 
  - Modify the data in the form and click on [Change] button to update this record in the database or click the [Reset] button to reset the form for step-1.
+
+
+![](https://github.com/Login2Xplore/JPDB-EmpDashboard/public_html/images/Emp-Exist.png)
+![](https://github.com/Login2Xplore/JPDB-EmpDashboard/public_html/images/Emp-New.png)
