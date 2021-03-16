@@ -126,14 +126,13 @@ function saveData() {
     jQuery.ajaxSetup({async: false});
     var jsonObj = executeCommandAtGivenBaseUrl(putRequest, "http://api.login2explore.com:5577", "/api/iml");
     jQuery.ajaxSetup({async: true});
-    console.log(jsonObj);
     resetForm();
     $("#empid").focus();
 
 }
 
 function changeData() {
-
+    $("#change").prop("disabled", true);
     jsonChg = validateData();
     var updateRequest = createUPDATERecordRequest("90937190|-31948797713594830|90931865", jsonChg, "Employee", "index", localStorage.getItem("recno"));
     jQuery.ajaxSetup({async: false});
