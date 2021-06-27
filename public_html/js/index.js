@@ -1,16 +1,26 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+//var jpdbBaseURL = "http://122.168.196.216:5572";
+//var connToken = "1429107685|-280740642106422077|1429107543";
+
+//var jpdbBaseURL = "http://localhost:5572";
+//var connToken = "1429107685|-280740642106422077|1429107543";
+
+var jpdbBaseURL = "http://api.login2explore.com:5577";
+var connToken = "90936571|-31948846965960543|90934225";
+
+var jpdbIRL = "/api/irl";
+var jpdbIML = "/api/iml";
+var empDBName = "EMP-DB";
+var empRelationName = "EmpData";
+
 $("#empid").focus();
 
-function recNo(jsonObj) {
-    var n = JSON.parse(jsonObj.data);
-    localStorage.setItem("recno", n.rec_no);
+function saveRecNo2LS(jsonObj) {
+    var lvData = JSON.parse(jsonObj.data);
+    localStorage.setItem("recno", lvData.rec_no);
 }
 
-function checkID() {
+function getEmpIdAsJsonObj() {
     var empid = $("#empid").val();
     var jsonStr = {
         id: empid
@@ -19,13 +29,13 @@ function checkID() {
 }
 
 function fillData(jsonObj) {
-    recNo(jsonObj);
-    var data = JSON.parse(jsonObj.data).record;
-    $("#empname").val(data.name);
-    $("#empsal").val(data.salary);
-    $("#hra").val(data.hra);
-    $("#da").val(data.da);
-    $("#deduct").val(data.deduction);
+    saveRecNo2LS(jsonObj);
+    var record = JSON.parse(jsonObj.data).record;
+    $("#empname").val(record.name);
+    $("#empsal").val(record.salary);
+    $("#hra").val(record.hra);
+    $("#da").val(record.da);
+    $("#deduct").val(record.deduction);
 }
 
 function resetForm() {
@@ -94,51 +104,51 @@ function validateData() {
 }
 
 function getEmp() {
-    var jsonObj = checkID();
-    var getRequest = createGET_BY_KEYRequest("90937190|-31948797713594830|90931865", "Employee", "index", jsonObj);
+    var empIdJsonObj = getEmpIdAsJsonObj();
+    var getRequest = createGET_BY_KEYRequest(connToken, empDBName, empRelationName, empIdJsonObj);
     jQuery.ajaxSetup({async: false});
-    var jsonObj = executeCommandAtGivenBaseUrl(getRequest, "http://api.login2explore.com:5577", "/api/irl");
+    var resJsonObj = executeCommandAtGivenBaseUrl(getRequest, jpdbBaseURL, jpdbIRL);
     jQuery.ajaxSetup({async: true});
-    if (jsonObj.status === 400) {
+    if (resJsonObj.status === 400) {
         $("#save").prop("disabled", false);
         $("#reset").prop("disabled", false);
+        $("#change").prop("disabled", true);
         $("#empname").focus();
 
-    } else if (jsonObj.status === 200) {
+    } else if (resJsonObj.status === 200) {
 
         $("#empid").prop("disabled", true);
-        fillData(jsonObj);
+        fillData(resJsonObj);
 
         $("#change").prop("disabled", false);
         $("#reset").prop("disabled", false);
+        $("#save").prop("disabled", true);
         $("#empname").focus();
 
     }
 }
 
 function saveData() {
-
     var jsonStrObj = validateData();
     if (jsonStrObj === "") {
         return "";
     }
-    var putRequest = createPUTRequest("90937190|-31948797713594830|90931865", jsonStrObj, "Employee", "index");
+    var putRequest = createPUTRequest(connToken, jsonStrObj, empDBName, empRelationName);
     jQuery.ajaxSetup({async: false});
-    var jsonObj = executeCommandAtGivenBaseUrl(putRequest, "http://api.login2explore.com:5577", "/api/iml");
+    var resJsonObj = executeCommandAtGivenBaseUrl(putRequest, jpdbBaseURL, jpdbIML);
     jQuery.ajaxSetup({async: true});
     resetForm();
     $("#empid").focus();
-
 }
 
 function changeData() {
     $("#change").prop("disabled", true);
     jsonChg = validateData();
-    var updateRequest = createUPDATERecordRequest("90937190|-31948797713594830|90931865", jsonChg, "Employee", "index", localStorage.getItem("recno"));
+    var updateRequest = createUPDATERecordRequest(connToken, jsonChg, empDBName, empRelationName, localStorage.getItem("recno"));
     jQuery.ajaxSetup({async: false});
-    var jsonObj = executeCommandAtGivenBaseUrl(updateRequest, "http://api.login2explore.com:5577", "/api/iml");
+    var resJsonObj = executeCommandAtGivenBaseUrl(updateRequest, jpdbBaseURL, jpdbIML);
     jQuery.ajaxSetup({async: true});
-    console.log(jsonObj);
+    console.log(resJsonObj);
     resetForm();
     $("#empid").focus();
 }
